@@ -40,10 +40,12 @@ class Animal:
 
 # Programa principal
 
-animal = Animal(host='localhost', user='root', password='', database='miapp',port=3306)
+animal = Animal(host='localhost', user='root', password='', database='miapp',port=3307)
 
 animal.agregar_callejero(1,'Luli', 3, 'Hembra', 'P', 'Caniche', 'URL', 'foto')
 animal.agregar_callejero(2,'Ramon', 10, 'Macho', 'G','Policia', 'URL', 'foto')
 animal.agregar_callejero(3,'Mecha', 7, 'Hembra', 'M', 'Labrador', 'URL', 'foto')
 # No deberia dejar agregarlo, id duplicado
 animal.agregar_callejero(1,'NACHA', 7, 'Hembra', 'M', 'Labrador', 'URL', 'foto')
+# Nuevo animal
+animal.agregar_callejero(4,'NACHA', 7, 'Hembra', 'M', 'Labrador', 'URL', 'foto')
