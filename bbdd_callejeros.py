@@ -37,6 +37,56 @@ class Animal:
           self.cursor.execute(sql)
           self.conn.commit()
           return True
+     
+     def consultar_callejero(self, id):
+     # Consultamos un producto a partir de su código 
+          self.cursor.execute(f"SELECT * FROM callejeros WHERE id = {id}") 
+          return self.cursor.fetchone()
+     
+     def modificar_callejero(self, id, nuevo_nombre, nueva_edad, nuevo_sexo, nuevo_tamanio, nueva_raza, nueva_ubicacion, nueva_imagen): 
+          # Modificamos los datos de un producto a partir de su código 
+          sql = f"UPDATE callejeros SET \
+                nombre='{nuevo_nombre}', \
+                edad={nueva_edad}, \
+                sexo='{nuevo_sexo}', \
+                tamanio='{nuevo_tamanio}', \
+                raza='{nueva_raza}', \
+                ubicacion='{nueva_ubicacion}', \
+                imagen='{nueva_imagen}' \
+                WHERE id = {id}" 
+          self.cursor.execute(sql) 
+          self.conn.commit() 
+          return self.cursor.rowcount > 0
+     
+     def mostrar_callejero(self,id):
+        callejero = self.consultar_callejero(id)
+        if callejero:
+            print("-" * 50)
+            print(f"Id_Callejero.....: {callejero['id']}")
+            print(f"Nombre...........: {callejero['nombre']}")
+            print(f"Edad.............: {callejero['edad']}")
+            print(f"Sexo.............: {callejero['sexo']}")
+            print(f"raza.............: {callejero['raza']}")
+            print(f"ubicacion........: {callejero['ubicacion']}")
+            print(f"imagen...........: {callejero['imagen']}")
+            print("-"*50)
+        else:
+          print("NO SE ENCONTRO")
+     
+     def listar_callejero(self):
+          self.cursor.execute("SELECT * FROM callejeros")
+          callejeros = self.cursor.fetchall()
+          print("-" * 50)
+          for callejero in callejeros:
+        
+            print(f"Id_Callejero.....: {callejero['id']}")
+            print(f"Nombre...........: {callejero['nombre']}")
+            print(f"Edad.............: {callejero['edad']}")
+            print(f"Sexo.............: {callejero['sexo']}")
+            print(f"raza.............: {callejero['raza']}")
+            print(f"ubicacion........: {callejero['ubicacion']}")
+            print(f"imagen...........: {callejero['imagen']}")
+            print("-"*50)
 
 # Programa principal
 
@@ -49,3 +99,17 @@ animal.agregar_callejero(3,'Mecha', 7, 'Hembra', 'M', 'Labrador', 'URL', 'foto')
 animal.agregar_callejero(1,'NACHA', 7, 'Hembra', 'M', 'Labrador', 'URL', 'foto')
 # Nuevo animal
 animal.agregar_callejero(4,'NACHA', 7, 'Hembra', 'M', 'Labrador', 'URL', 'foto')
+# Consultamos un producto y lo mostramos 
+callejero = animal.consultar_callejero(1) 
+if callejero: 
+ print(f"CALLEJERO encontrado: {callejero['nombre']}") 
+else: 
+ print("CALLEJERO no encontrado.")
+# Modificamos un producto y lo mostramos
+animal.mostrar_callejero(1)
+animal.modificar_callejero(1, 'MORIA', 20, 'HEMBRA', 'P','CAniche','URL', 'img')
+animal.mostrar_callejero(1)
+# Mostramos todos los perros
+print()
+animal.listar_callejero()
+print()
