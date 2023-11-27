@@ -27,10 +27,11 @@ class Animal:
      def agregar_callejero(self, id, nombre, edad, sexo,tamanio, raza, ubicacion, imagen):
           # Verificamos si ya existe un callejero con el mismo código
           self.cursor.execute(f"SELECT * FROM callejeros WHERE id = {id}")
-          
           callejero_existe = self.cursor.fetchone()
+          
           if callejero_existe:
-               return False
+               return False # Si ese id YA EXISTE, con false salis del metodo Agregar
+
           # Si no existe, agregamos el nuevo callejero a la tabla
           sql = f"INSERT INTO callejeros (id, nombre, edad, sexo, tamanio, raza, ubicacion, imagen) VALUES ({id}, '{nombre}', {edad}, '{sexo}','{tamanio}','{raza}','{ubicacion}','{imagen}')"
           
@@ -39,12 +40,12 @@ class Animal:
           return True
      
      def consultar_callejero(self, id):
-     # Consultamos un producto a partir de su código 
+     # Verificamos a partir del id pasado como parametro, si ese callejero existe 
           self.cursor.execute(f"SELECT * FROM callejeros WHERE id = {id}") 
           return self.cursor.fetchone()
      
      def modificar_callejero(self, id, nuevo_nombre, nueva_edad, nuevo_sexo, nuevo_tamanio, nueva_raza, nueva_ubicacion, nueva_imagen): 
-          # Modificamos los datos de un producto a partir de su código 
+          # Modificamos los datos del callejero, cuyo id pasamos como parametro
           sql = f"UPDATE callejeros SET \
                 nombre='{nuevo_nombre}', \
                 edad={nueva_edad}, \
@@ -71,14 +72,13 @@ class Animal:
             print(f"imagen...........: {callejero['imagen']}")
             print("-"*50)
         else:
-          print("NO SE ENCONTRO")
+          print("NO SE ENCONTRO callejero con ese ID, por favor verifique el codigo")
      
      def listar_callejero(self):
           self.cursor.execute("SELECT * FROM callejeros")
           callejeros = self.cursor.fetchall()
           print("-" * 50)
           for callejero in callejeros:
-        
             print(f"Id_Callejero.....: {callejero['id']}")
             print(f"Nombre...........: {callejero['nombre']}")
             print(f"Edad.............: {callejero['edad']}")
@@ -87,6 +87,13 @@ class Animal:
             print(f"ubicacion........: {callejero['ubicacion']}")
             print(f"imagen...........: {callejero['imagen']}")
             print("-"*50)
+     
+     def eliminar_callejero(self, id):
+          # Eliminamos un callejero a partir de su id
+          self.cursor.execute(f"DELETE FROM callejeros WHERE id = {id}")
+          self.conn.commit()
+          return self.cursor.rowcount > 0
+
 
 # Programa principal
 
@@ -101,15 +108,25 @@ animal.agregar_callejero(1,'NACHA', 7, 'Hembra', 'M', 'Labrador', 'URL', 'foto')
 animal.agregar_callejero(4,'NACHA', 7, 'Hembra', 'M', 'Labrador', 'URL', 'foto')
 # Consultamos un producto y lo mostramos 
 callejero = animal.consultar_callejero(1) 
+print("BUSCAMOS EL CALLEJERO 1")
+print()
 if callejero: 
- print(f"CALLEJERO encontrado: {callejero['nombre']}") 
+ print(f"CALLEJERO encontrado, su nombre es : {callejero['nombre']} y tiene {callejero['edad']} años :)") 
 else: 
  print("CALLEJERO no encontrado.")
 # Modificamos un producto y lo mostramos
+print()
+print("Modificamos los datos de CALLEJERO 1")
 animal.mostrar_callejero(1)
-animal.modificar_callejero(1, 'MORIA', 20, 'HEMBRA', 'P','CAniche','URL', 'img')
+print("Y mostramos sus datos nuevos")
+print()
+animal.modificar_callejero(1, 'BETO', 20, 'MACHO', 'P','Caniche','URL', 'img')
 animal.mostrar_callejero(1)
 # Mostramos todos los perros
 print()
+print (f'Los datos de los callejeros activos son: ')
 animal.listar_callejero()
 print()
+print("vamos a eliminar el callejero 2, RAMON")
+animal.eliminar_callejero(2)
+animal.listar_callejero()
