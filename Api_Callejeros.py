@@ -54,10 +54,7 @@ class Animal: # CONSTRUCTOR DE LA CLASE
           callejeros = self.cursor.fetchall()
           return callejeros 
       
-     def listar_callejeros(self):
-          self.cursor.execute("SELECT * FROM callejeros")
-          callejeros = self.cursor.fetchall()
-          return callejeros 
+     
 #-------------------------------------------------------------------- 
 # Cuerpo del programa 
 #-------------------------------------------------------------------- 
